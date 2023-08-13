@@ -7,6 +7,7 @@ import { RootLayout } from "./layouts/rootLayout";
 import { userRoute } from "./pages/User";
 import NotFound from "./pages/NotFound";
 import Error from "./pages/Error";
+import { newPostRoute } from "./pages/NewPost";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
                 ...postsRoute,
               },
               { path: ":postId", ...postRoute },
+              { path: "new", ...newPostRoute },
             ],
           },
           {
