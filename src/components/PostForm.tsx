@@ -8,23 +8,20 @@ import {
 } from "react-router-dom";
 import { UserType } from "../types/userType";
 import { FormErrorsType } from "../types/formErrorsType";
+import { PostType } from "../types/postType";
 
 function PostForm() {
   const errorMessages = useActionData() as FormErrorsType;
   const { postId } = useParams();
-  const { users, postData } = useLoaderData() as {
+  const { users, post } = useLoaderData() as {
     users: UserType[];
-    postData?: { title: string; body: string };
+    post?: PostType;
   };
   const { state } = useNavigation();
 
   const isSubmitting = state === "loading" || state === "submitting";
   return (
-    <Form
-      method={postData ? "PUT" : "POST"}
-      action={postData ? `/posts/${postId}/edit` : "/posts/new"}
-      className="form"
-    >
+    <Form method={post ? "PUT" : "POST"} className="form">
       <div className="form-row">
         <div className={`form-group ${errorMessages?.title && "error"}`}>
           <label htmlFor="title">Title</label>
@@ -32,7 +29,7 @@ function PostForm() {
             type="text"
             name="title"
             id="title"
-            defaultValue={postData ? postData.title : undefined}
+            defaultValue={post ? post.title : undefined}
           />
           {errorMessages?.title && (
             <div className="error-message">{errorMessages?.title}</div>
@@ -40,7 +37,7 @@ function PostForm() {
         </div>
         <div className="form-group">
           <label htmlFor="userId">Author</label>
-          <select name="userId" id="userId">
+          <select name="userId" id="userId" defaultValue={post?.userId}>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.name}
@@ -55,7 +52,7 @@ function PostForm() {
           <textarea
             name="body"
             id="body"
-            defaultValue={postData ? postData.body : undefined}
+            defaultValue={post ? post.body : undefined}
           ></textarea>
           {errorMessages?.body && (
             <div className="error-message">{errorMessages?.body}</div>

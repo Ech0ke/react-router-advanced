@@ -14,8 +14,8 @@ async function loader(args: LoaderFunctionArgs) {
   const { signal } = args.request;
   const params = args.params as { postId: string };
   const users = getUsers({ signal });
-  const { title, body } = await getPost(params.postId, { signal });
-  return { users: await users, postData: { title, body } };
+  const post = await getPost(params.postId, { signal });
+  return { users: await users, post: post };
 }
 
 async function action(args: ActionFunctionArgs) {
@@ -47,7 +47,7 @@ async function action(args: ActionFunctionArgs) {
     body: body as string,
   };
   await editPost(dataToPost, Number(params.postId), { signal });
-  return redirect("/posts");
+  return redirect(`/posts/${params.postId}`);
 }
 
 function EditPost() {
