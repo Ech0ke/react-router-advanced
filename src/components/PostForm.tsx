@@ -11,7 +11,7 @@ type PostFormProps = {
 
 function PostForm({ users, post, errorMessages }: PostFormProps) {
   const { state } = useNavigation();
-  const isSubmitting = state === "loading" || state === "submitting";
+  const isSubmitting = state === "submitting";
   return (
     <Form method={post ? "PUT" : "POST"} className="form">
       <div className="form-row">
@@ -52,7 +52,7 @@ function PostForm({ users, post, errorMessages }: PostFormProps) {
           Cancel
         </Link>
         <button disabled={isSubmitting} className="btn">
-          {isSubmitting ? "Loading" : "Save"}
+          {isSubmitting ? "Saving" : "Save"}
         </button>
       </div>
     </Form>
