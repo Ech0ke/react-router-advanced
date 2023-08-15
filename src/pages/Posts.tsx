@@ -5,15 +5,20 @@ import PostCard from "../components/PostCard";
 import PostsFilter from "../components/PostsFilter";
 
 async function loader({
-  request: { signal },
+  request: { signal, url },
 }: {
-  request: { signal: AbortSignal };
+  request: { signal: AbortSignal; url: string };
 }) {
-  return getPosts({ signal });
+  const searchParams = new URL(url).searchParams;
+  const query = searchParams.get("query") || "";
+  return {
+    searchParams: query,
+    posts: await getPosts({ signal }, query),
+  };
 }
 
 function Posts() {
-  const posts = useLoaderData() as PostType[];
+  const { posts } = useLoaderData() as { posts: PostType[] };
   return (
     <>
       <h1 className="page-title">

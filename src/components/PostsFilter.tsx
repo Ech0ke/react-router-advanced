@@ -1,10 +1,25 @@
+import { useEffect, useRef } from "react";
+import { Form, useLoaderData, useNavigation } from "react-router-dom";
+
 function PostsFilter() {
+  const { state } = useNavigation();
+  const isLoading = state === "loading";
+  const { searchParams } = useLoaderData() as {
+    searchParams: string;
+  };
+
+  const queryRef = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    queryRef.current.value = searchParams;
+  }, [searchParams]);
+
   return (
-    <form method="get" action="/posts" className="form mb-4">
+    <Form method="get" action="/posts" className="form mb-4">
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="query">Query</label>
-          <input type="search" name="query" id="query" />
+          <input type="search" name="query" id="query" ref={queryRef} />
         </div>
         {/* <div className="form-group">
             <label htmlFor="userId">Author</label>
@@ -22,9 +37,11 @@ function PostsFilter() {
               <option value="10">Clementina DuBuque</option>
             </select>
           </div> */}
-        <button className="btn">Filter</button>
+        <button disabled={isLoading} className="btn">
+          {isLoading ? "Filtering" : "Filter"}
+        </button>
       </div>
-    </form>
+    </Form>
   );
 }
 
