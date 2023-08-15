@@ -10,7 +10,8 @@ async function loader({
 }: {
   request: { signal: AbortSignal };
 }) {
-  return getUsers({ signal });
+  const users = getUsers({ signal });
+  return { users: await users };
 }
 
 async function action(args: ActionFunctionArgs) {

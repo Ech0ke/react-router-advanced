@@ -4,21 +4,36 @@ import {
   useActionData,
   useLoaderData,
   useNavigation,
+  useParams,
 } from "react-router-dom";
 import { UserType } from "../types/userType";
 import { FormErrorsType } from "../types/formErrorsType";
 
 function PostForm() {
   const errorMessages = useActionData() as FormErrorsType;
-  const users = useLoaderData() as UserType[];
+  const { postId } = useParams();
+  const { users, postData } = useLoaderData() as {
+    users: UserType[];
+    postData?: { title: string; body: string };
+  };
   const { state } = useNavigation();
+
   const isSubmitting = state === "loading" || state === "submitting";
   return (
-    <Form method="POST" action="/posts/new" className="form">
+    <Form
+      method={postData ? "PUT" : "POST"}
+      action={postData ? `/posts/${postId}/edit` : "/posts/new"}
+      className="form"
+    >
       <div className="form-row">
         <div className={`form-group ${errorMessages?.title && "error"}`}>
           <label htmlFor="title">Title</label>
-          <input type="text" name="title" id="title" />
+          <input
+            type="text"
+            name="title"
+            id="title"
+            defaultValue={postData ? postData.title : undefined}
+          />
           {errorMessages?.title && (
             <div className="error-message">{errorMessages?.title}</div>
           )}
@@ -37,7 +52,11 @@ function PostForm() {
       <div className="form-row">
         <div className={`form-group ${errorMessages?.body && "error"}`}>
           <label htmlFor="body">Body</label>
-          <textarea name="body" id="body"></textarea>
+          <textarea
+            name="body"
+            id="body"
+            defaultValue={postData ? postData.body : undefined}
+          ></textarea>
           {errorMessages?.body && (
             <div className="error-message">{errorMessages?.body}</div>
           )}
