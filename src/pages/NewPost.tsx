@@ -11,6 +11,7 @@ import { FormErrorsType } from "../types/formErrorsType";
 import PostForm from "../components/PostForm";
 import { PostType } from "../types/postType";
 import { UserType } from "../types/userType";
+import postFormValidator from "../helpers/validation/postFormValidator";
 
 async function loader({
   request: { signal },
@@ -25,20 +26,11 @@ async function action(args: ActionFunctionArgs) {
   const { signal } = args.request;
   const formData = await args.request.formData();
 
-  const formErrors: FormErrorsType = {};
+  const userId = formData.get("userId") as string;
+  const title = formData.get("title") as string;
+  const body = formData.get("body") as string;
 
-  // Destructure values from formEntries
-  const { userId, title, body } = Object.fromEntries(formData.entries());
-
-  if (userId === "") {
-    formErrors.userId = "Required";
-  }
-  if (title === "") {
-    formErrors.title = "Required";
-  }
-  if (body === "") {
-    formErrors.body = "Required";
-  }
+  const formErrors = postFormValidator({ userId, title, body });
 
   // if any of error fields are not epty, return all errors
   if (Object.keys(formErrors).length) {

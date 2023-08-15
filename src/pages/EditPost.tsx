@@ -13,6 +13,7 @@ import { getPost } from "../helpers/api/getPost";
 import { editPost } from "../helpers/api/editPost";
 import { UserType } from "../types/userType";
 import { PostType } from "../types/postType";
+import postFormValidator from "../helpers/validation/postFormValidator";
 
 async function loader(args: LoaderFunctionArgs) {
   const { signal } = args.request;
@@ -27,20 +28,11 @@ async function action(args: ActionFunctionArgs) {
   const params = args.params as { postId: string };
   const formData = await args.request.formData();
 
-  const formErrors: FormErrorsType = {};
+  const userId = formData.get("userId") as string;
+  const title = formData.get("title") as string;
+  const body = formData.get("body") as string;
 
-  // Destructure values from formEntries
-  const { userId, title, body } = Object.fromEntries(formData.entries());
-
-  if (userId === "") {
-    formErrors.userId = "Required";
-  }
-  if (title === "") {
-    formErrors.title = "Required";
-  }
-  if (body === "") {
-    formErrors.body = "Required";
-  }
+  const formErrors = postFormValidator({ userId, title, body });
 
   if (Object.keys(formErrors).length) {
     return formErrors;
