@@ -11,9 +11,10 @@ async function loader({
 }) {
   const searchParams = new URL(url).searchParams;
   const query = searchParams.get("query") || "";
+  const userId = searchParams.get("userId") || "";
   return {
-    searchParams: query,
-    posts: await getPosts({ signal }, query),
+    searchParams: { query, userId },
+    posts: await getPosts({ signal }, query, userId),
   };
 }
 
