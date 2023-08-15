@@ -1,24 +1,16 @@
-import {
-  Form,
-  Link,
-  useActionData,
-  useLoaderData,
-  useNavigation,
-  useParams,
-} from "react-router-dom";
+import { Form, Link, useNavigation } from "react-router-dom";
 import { UserType } from "../types/userType";
 import { FormErrorsType } from "../types/formErrorsType";
 import { PostType } from "../types/postType";
 
-function PostForm() {
-  const errorMessages = useActionData() as FormErrorsType;
-  const { postId } = useParams();
-  const { users, post } = useLoaderData() as {
-    users: UserType[];
-    post?: PostType;
-  };
-  const { state } = useNavigation();
+type PostFormProps = {
+  users: UserType[];
+  post?: PostType;
+  errorMessages?: FormErrorsType;
+};
 
+function PostForm({ users, post, errorMessages }: PostFormProps) {
+  const { state } = useNavigation();
   const isSubmitting = state === "loading" || state === "submitting";
   return (
     <Form method={post ? "PUT" : "POST"} className="form">

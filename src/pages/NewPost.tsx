@@ -1,10 +1,16 @@
-import { ActionFunctionArgs, redirect } from "react-router-dom";
+import {
+  ActionFunctionArgs,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router-dom";
 import { getUsers } from "../helpers/api/getUsers";
 import { createPost } from "../helpers/api/createPost";
 import { NewPostType } from "../types/newPostType";
 import { FormErrorsType } from "../types/formErrorsType";
 import PostForm from "../components/PostForm";
 import { PostType } from "../types/postType";
+import { UserType } from "../types/userType";
 
 async function loader({
   request: { signal },
@@ -48,10 +54,14 @@ async function action(args: ActionFunctionArgs) {
 }
 
 function NewPost() {
+  const { users } = useLoaderData() as {
+    users: UserType[];
+  };
+  const errorMessages = useActionData() as FormErrorsType;
   return (
     <>
       <h1 className="page-title">New Post</h1>
-      <PostForm />
+      <PostForm users={users} errorMessages={errorMessages} />
     </>
   );
 }
