@@ -2,6 +2,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import { PostType } from "../types/postType";
 import { getPosts } from "../helpers/api/getPosts";
 import PostCard from "../components/PostCard";
+import PostsFilter from "../components/PostsFilter";
 
 async function loader({
   request: { signal },
@@ -23,6 +24,7 @@ function Posts() {
           </Link>
         </div>
       </h1>
+      <PostsFilter />
       <div className="card-grid">
         {posts.map((post) => (
           <PostCard key={post.id} {...post} />
