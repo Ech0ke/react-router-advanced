@@ -60,7 +60,7 @@ function PostForm() {
         </div>
       </div>
       <div className="form-row form-btn-row">
-        <Link className="btn btn-outline" to="/posts">
+        <Link className="btn btn-outline" to="..">
           Cancel
         </Link>
         <button disabled={isSubmitting} className="btn">
