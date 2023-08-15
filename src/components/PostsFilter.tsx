@@ -30,6 +30,7 @@ function PostsFilter() {
         </div>
         <div className="form-group">
           <label htmlFor="userId">Author</label>
+          {/* TODO: Users retreived from db */}
           <select name="userId" id="userId" ref={userRef}>
             <option value="">Any</option>
             <option value="1">Leanne Graham</option>
