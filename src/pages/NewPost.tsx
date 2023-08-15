@@ -4,6 +4,7 @@ import { createPost } from "../helpers/api/createPost";
 import { NewPostType } from "../types/newPostType";
 import { FormErrorsType } from "../types/formErrorsType";
 import PostForm from "../components/PostForm";
+import { PostType } from "../types/postType";
 
 async function loader({
   request: { signal },
@@ -42,8 +43,8 @@ async function action(args: ActionFunctionArgs) {
     title: title as string,
     body: body as string,
   };
-  await createPost(dataToPost, { signal });
-  return redirect("/posts");
+  const post: PostType = await createPost(dataToPost, { signal });
+  return redirect(`/posts/${post.id}`);
 }
 
 function NewPost() {
