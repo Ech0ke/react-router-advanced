@@ -1,14 +1,18 @@
 import { useEffect, useRef } from "react";
-import { Form, useLoaderData, useNavigation } from "react-router-dom";
+import { Form, useNavigation } from "react-router-dom";
+import { UserType } from "../types/userType";
 
-function PostsFilter() {
+type PostsFilterProps = {
+  users: UserType[];
+  searchParams: { query: string; userId: string };
+};
+
+function PostsFilter({
+  users,
+  searchParams: { query, userId },
+}: PostsFilterProps) {
   const { state } = useNavigation();
   const isLoading = state === "loading";
-  const {
-    searchParams: { query, userId },
-  } = useLoaderData() as {
-    searchParams: { query: string; userId: string };
-  };
 
   const queryRef = useRef<HTMLInputElement>(null!);
   const userRef = useRef<HTMLSelectElement>(null!);
@@ -22,7 +26,7 @@ function PostsFilter() {
   }, [userId]);
 
   return (
-    <Form method="get" action="/posts" className="form mb-4">
+    <Form className="form mb-4">
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="query">Query</label>

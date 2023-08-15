@@ -3,6 +3,8 @@ import { PostType } from "../types/postType";
 import { getPosts } from "../helpers/api/getPosts";
 import PostCard from "../components/PostCard";
 import PostsFilter from "../components/PostsFilter";
+import { UserType } from "../types/userType";
+import { getUsers } from "../helpers/api/getUsers";
 
 async function loader({
   request: { signal, url },
@@ -12,14 +14,24 @@ async function loader({
   const searchParams = new URL(url).searchParams;
   const query = searchParams.get("query") || "";
   const userId = searchParams.get("userId") || "";
+  const filterParams: { q: string; userId?: string } = { q: query };
+  if (userId !== "") filterParams.userId = userId;
+
+  const posts = getPosts({ signal, params: filterParams });
+  const users = getUsers({ signal });
   return {
+    posts: await posts,
     searchParams: { query, userId },
-    posts: await getPosts({ signal }, query, userId),
+    users: await users,
   };
 }
 
 function Posts() {
-  const { posts } = useLoaderData() as { posts: PostType[] };
+  const { posts, users, searchParams } = useLoaderData() as {
+    posts: PostType[];
+    users: UserType[];
+    searchParams: { query: string; userId: string };
+  };
   return (
     <>
       <h1 className="page-title">
@@ -30,7 +42,7 @@ function Posts() {
           </Link>
         </div>
       </h1>
-      <PostsFilter />
+      <PostsFilter users={users} searchParams={searchParams} />
       <div className="card-grid">
         {posts.map((post) => (
           <PostCard key={post.id} {...post} />

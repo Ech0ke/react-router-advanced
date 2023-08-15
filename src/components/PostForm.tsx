@@ -21,7 +21,7 @@ function PostForm({ users, post, errorMessages }: PostFormProps) {
             type="text"
             name="title"
             id="title"
-            defaultValue={post ? post.title : undefined}
+            defaultValue={post?.title}
           />
           {errorMessages?.title && (
             <div className="error-message">{errorMessages?.title}</div>
@@ -41,11 +41,7 @@ function PostForm({ users, post, errorMessages }: PostFormProps) {
       <div className="form-row">
         <div className={`form-group ${errorMessages?.body && "error"}`}>
           <label htmlFor="body">Body</label>
-          <textarea
-            name="body"
-            id="body"
-            defaultValue={post ? post.body : undefined}
-          ></textarea>
+          <textarea name="body" id="body" defaultValue={post?.body}></textarea>
           {errorMessages?.body && (
             <div className="error-message">{errorMessages?.body}</div>
           )}
