@@ -33,6 +33,7 @@ async function action(args: ActionFunctionArgs) {
     formErrors.body = "Required";
   }
 
+  // if any of error fields are not epty, return all errors
   if (Object.keys(formErrors).length) {
     return formErrors;
   }
