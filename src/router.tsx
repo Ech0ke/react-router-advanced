@@ -8,6 +8,7 @@ import { userRoute } from "./pages/User";
 import NotFound from "./pages/NotFound";
 import Error from "./pages/Error";
 import { newPostRoute } from "./pages/NewPost";
+import { editPostRoute } from "./pages/EditPost";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +26,16 @@ export const router = createBrowserRouter([
                 index: true,
                 ...postsRoute,
               },
-              { path: ":postId", ...postRoute },
+              {
+                path: ":postId",
+                children: [
+                  {
+                    index: true,
+                    ...postRoute,
+                  },
+                  { path: "edit", ...editPostRoute },
+                ],
+              },
               { path: "new", ...newPostRoute },
             ],
           },
