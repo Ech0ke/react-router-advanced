@@ -39,8 +39,8 @@ async function action(args: ActionFunctionArgs) {
   }
   const dataToPost: NewPostType = {
     userId: Number(userId),
-    title: title as string,
-    body: body as string,
+    title: title,
+    body: body,
   };
   await editPost(dataToPost, Number(params.postId), { signal });
   return redirect(`/posts/${params.postId}`);
